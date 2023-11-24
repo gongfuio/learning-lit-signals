@@ -43,6 +43,8 @@ export class SceneView extends LitElement {
   }
 
   render() {
+    const signalStringified = JSON.stringify(watch(this.#signals.angles).values[0]);
+    console.log('signalStringified', signalStringified); // not updated on signal change
     return html`
       <div id="scene">
         <slot></slot>

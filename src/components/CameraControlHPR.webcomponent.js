@@ -126,10 +126,11 @@ export class CameraControlHPR extends LitElement {
   }
 
   render() {
+    const signalStringified = JSON.stringify(watch(this.#signal).values[0]);
     return html`
       <h1>HPR</h1>
       <slot></slot>
-      <p>Signal: ${watch(this.#signal)}</p>
+      <p>Signal: ${signalStringified}</p>
       ${this.renderHPR(this.angles)}<br />
       ${this.renderSlider("heading", "Heading", this.heading, HPR_MINMAX, this._onChangeHeading)}<br />
       ${this.renderSlider("pitch", "Pitch", this.pitch, HPR_MINMAX, this._onChangePitch)}<br />

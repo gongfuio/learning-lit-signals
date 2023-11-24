@@ -1,6 +1,6 @@
 /* eslint-env browser */
-import { LitElement, html, css } from 'lit-element';
-import { watch } from '@lit-labs/preact-signals';
+import { LitElement, html, css } from "lit-element";
+import { watch } from "@lit-labs/preact-signals";
 
 const ORIGIN_COORD = Object.freeze([0, 0, 0]);
 const LAT_MINMAX = Object.freeze([-90, 90]);
@@ -12,7 +12,9 @@ export function origin_coord() {
 }
 
 function normalizeCoord(coord) {
-  if (Array.isArray(coord) && coord.length === 3) { return coord; }
+  if (Array.isArray(coord) && coord.length === 3) {
+    return coord;
+  }
   return origin_coord();
 }
 
@@ -100,7 +102,7 @@ export class CameraControlPosition extends LitElement {
   }
 
   updated(changedProperties) {
-    if(changedProperties.has("coord") ) {
+    if (changedProperties.has("coord")) {
       this._onChangeCoord();
     }
   }
@@ -147,19 +149,37 @@ export class CameraControlPosition extends LitElement {
     this.coord = [lat, lng, val];
   }
 
-  get alt() {
-    return this.coord[2];
-  }
+  // eslint-disable-next-line getter-return
+  get alt() {}
 
   render() {
+    const signalStringified = JSON.stringify(watch(this.#signal).values[0]);
     return html`
       <h1>Position</h1>
       <slot></slot>
-      <p>Signal: ${watch(this.#signal)}</p>
+      <p>Signal: ${signalStringified}</p>
       ${this.renderCoord(this.coord, this.srs)}<br />
-      ${this.renderSlider("lat", "Latitude", this.lat, LAT_MINMAX, this._onChangeLat)}<br />
-      ${this.renderSlider("lng", "Longitude", this.lng, LNG_MINMAX, this._onChangeLng)}<br />
-      ${this.renderSlider("alt", "Altitude", this.alt, ALT_MINMAX, this._onChangeAlt)}
+      ${this.renderSlider(
+        "lat",
+        "Latitude",
+        this.lat,
+        LAT_MINMAX,
+        this._onChangeLat,
+      )}<br />
+      ${this.renderSlider(
+        "lng",
+        "Longitude",
+        this.lng,
+        LNG_MINMAX,
+        this._onChangeLng,
+      )}<br />
+      ${this.renderSlider(
+        "alt",
+        "Altitude",
+        this.alt,
+        ALT_MINMAX,
+        this._onChangeAlt,
+      )}
     `;
   }
 
@@ -174,11 +194,15 @@ export class CameraControlPosition extends LitElement {
   renderSlider(name, label, val, minmax, onChangeFn) {
     const [min, max] = minmax || [0, 1];
     return html`
-      <input type="range"
-        id="${name}" name="${name}"
-        min="${min}" max="${max}"
+      <input
+        type="range"
+        id="${name}"
+        name="${name}"
+        min="${min}"
+        max="${max}"
         .value="${val}"
-        @input=${onChangeFn} />
+        @input=${onChangeFn}
+      />
       <label for="${name}">${label}</label>
     `;
   }
@@ -186,9 +210,9 @@ export class CameraControlPosition extends LitElement {
   _onChangeCoord() {
     if (this.#signal) {
       this.#signal.value = this.coord;
-    };
+    }
     this.dispatchEvent(
-      new CustomEvent("coord-changed", { detail: this.coord })
+      new CustomEvent("coord-changed", { detail: this.coord }),
     );
   }
 
