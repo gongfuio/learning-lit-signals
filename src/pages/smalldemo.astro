@@ -1,18 +1,27 @@
 ---
-import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
+import ShoelaceLayout from "../layouts/ShoelaceLayout.astro";
 ---
-<ShoelaceLayout title="Signals › WebApp">
-  <h1>Signals</h1>
+
+<ShoelaceLayout title="Signals › SmallSignalsDemo">
+  <h1>Small Signals Demo</h1>
   <div id="set01" class="controls">
     <camera-control-hpr id="hpr01" angles="[90,30,0]"></camera-control-hpr>
-    <camera-control-position id="pos01" coord="[45,6,500]"></camera-control-position>
+    <camera-control-position id="pos01" coord="[45,6,500]"
+    ></camera-control-position>
+    <signal-example1></signal-example1>
+    <signal-example2></signal-example2>
+    <signal-example3></signal-example3>
   </div>
   <div class="scene">
-    <scene-view angles="[90,30,0]" coord="[45,6,500]"></scene-view>
+    <scene-view1 angles="[90,30,0]" coord="[45,6,500]"></scene-view1>
   </div>
   <div id="set02" class="controls">
     <camera-control-hpr id="hpr02" angles="[90,30,0]"></camera-control-hpr>
-    <camera-control-position id="pos02" coord="[45,6,500]"></camera-control-position>
+    <camera-control-position id="pos02" coord="[45,6,500]"
+    ></camera-control-position>
+    <signal-example1></signal-example1>
+    <signal-example2></signal-example2>
+    <signal-example3></signal-example3>
   </div>
 </ShoelaceLayout>
 
@@ -21,29 +30,34 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
 
   import "../components/CameraControlHPR.js";
   import "../components/CameraControlPosition.js";
-  import "../components/SceneView.js";
+  import "../components/SceneView1.js";
+  import "../components/SignalExample1.js";
+  import "../components/SignalExample2.js";
+  import "../components/SignalExample3.js";
 
-  const sceneView = document.querySelector("scene-view");
+  const sceneView1 = document.querySelector("scene-view1");
   const allCameraControlHPR = document.querySelectorAll("camera-control-hpr");
-  const allCameraControlPosition = document.querySelectorAll("camera-control-position");
+  const allCameraControlPosition = document.querySelectorAll(
+    "camera-control-position",
+  );
 
   const angles = signal([90, 30, 0]);
   const coord = signal([45, 6, 500]);
 
-  sceneView.signals = { angles, coord };
+  sceneView1.signals = { angles, coord };
 
   allCameraControlHPR?.forEach((cameraControlHPR) => {
     cameraControlHPR.signal = angles;
     cameraControlHPR.addEventListener("angles-changed", (e) => {
       console.log(`HPR angles changed to [${e.detail.join(",")}]`);
-    })
+    });
   });
 
   allCameraControlPosition?.forEach((cameraControlPosition) => {
     cameraControlPosition.signal = coord;
     cameraControlPosition.addEventListener("coord-changed", (e) => {
       console.log(`Position 01 coordinates changed to [${e.detail.join(",")}]`);
-    })
+    });
   });
 </script>
 
@@ -55,19 +69,30 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    height: 15rem;
+    height: 18rem;
   }
   div.scene {
-    margin-top: 1rem; margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
   camera-control-hpr,
   camera-control-position {
     background-color: aliceblue;
     padding: 1rem;
-    width: 50%;
+    width: 30%;
   }
-  scene-view {
+
+  signal-example1,
+  signal-example2,
+  signal-example3
+  {
+    background-color: hsl(30,100%,95%);
+    padding: 1rem;
+    width: 20%;
+  }
+  scene-view1 {
     background-color: aliceblue;
-    width: 100%; height: 30rem;
+    width: 100%;
+    height: 18rem;
   }
 </style>
