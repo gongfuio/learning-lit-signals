@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { LitElement, html, css } from "lit-element";
-import { watch } from "@lit-labs/preact-signals";
+import { SignalWatcher } from '@lit-labs/preact-signals';
 
 const DEFAULT_ANGLES = Object.freeze([0, 0, 0]);
 const HPR_MINMAX = Object.freeze([-180, 180]);
@@ -31,7 +31,7 @@ function parseHPR(val) {
   return clamp(parseFloat(val), HPR_MINMAX);
 }
 
-export class CameraControlHPR extends LitElement {
+export class CameraControlHPR extends SignalWatcher(LitElement) {
   #signal;
 
   static get styles() {
@@ -129,7 +129,7 @@ export class CameraControlHPR extends LitElement {
     return html`
       <h1>HPR</h1>
       <slot></slot>
-      <p>Signal: ${watch(this.#signal)}</p>
+      <p>Signal: ${JSON.stringify(this.#signal.value)}</p>
       ${this.renderHPR(this.angles)}<br />
       ${this.renderSlider("heading", "Heading", this.heading, HPR_MINMAX, this._onChangeHeading)}<br />
       ${this.renderSlider("pitch", "Pitch", this.pitch, HPR_MINMAX, this._onChangePitch)}<br />

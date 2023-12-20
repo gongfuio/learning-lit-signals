@@ -32,17 +32,19 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
 
   sceneView.signals = { angles, coord };
 
-  allCameraControlHPR?.forEach((cameraControlHPR) => {
+  allCameraControlHPR?.forEach((cameraControlHPR, index) => {
     cameraControlHPR.signal = angles;
     cameraControlHPR.addEventListener("angles-changed", (e) => {
-      console.log(`HPR angles changed to [${e.detail.join(",")}]`);
+      console.log(`HPR ${String(index).padStart(2,'0')} angles changed to [${e.detail.join(",")}]`);
     })
   });
 
-  allCameraControlPosition?.forEach((cameraControlPosition) => {
+  allCameraControlPosition?.forEach((cameraControlPosition, index) => {
     cameraControlPosition.signal = coord;
     cameraControlPosition.addEventListener("coord-changed", (e) => {
-      console.log(`Position 01 coordinates changed to [${e.detail.join(",")}]`);
+      // how to add leading zeros to the numbers?
+
+      console.log(`POS ${String(index).padStart(2,'0')} coordinates changed to [${e.detail.join(",")}]`);
     })
   });
 </script>

@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { LitElement, html, css } from 'lit-element';
-import { watch } from '@lit-labs/preact-signals';
+import { SignalWatcher } from '@lit-labs/preact-signals';
 
 const ORIGIN_COORD = Object.freeze([0, 0, 0]);
 const LAT_MINMAX = Object.freeze([-90, 90]);
@@ -39,7 +39,7 @@ function parseAlt(val) {
   return clamp(parseFloat(val), ALT_MINMAX);
 }
 
-export class CameraControlPosition extends LitElement {
+export class CameraControlPosition extends SignalWatcher(LitElement) {
   #signal;
 
   static get styles() {
@@ -155,7 +155,7 @@ export class CameraControlPosition extends LitElement {
     return html`
       <h1>Position</h1>
       <slot></slot>
-      <p>Signal: ${watch(this.#signal)}</p>
+      <p>Signal: ${JSON.stringify(this.#signal.value)}</p>
       ${this.renderCoord(this.coord, this.srs)}<br />
       ${this.renderSlider("lat", "Latitude", this.lat, LAT_MINMAX, this._onChangeLat)}<br />
       ${this.renderSlider("lng", "Longitude", this.lng, LNG_MINMAX, this._onChangeLng)}<br />
